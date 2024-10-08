@@ -7,4 +7,12 @@
     <li>Password Protection: Don't want strangers for talking with you? There is a code required password for joining the main conversation</li>
     <li>Old device support: since this is made for any PC, it can run anywhere!</li>
 </ul>
-
+<h2>FUTURE ADDITIONS:</h2>
+<hr>
+<p>There will be an UDP port connection for 2 clients and a fast connection.</p>
+<hr>
+<p>PyAES cipher for <strong>crypthographing all the data on transit.</strong> (And a PyAES key generator that need to be sent for everyone)</p>
+<hr>
+<p>Bugfixes and improvements</p>
+<hr>
+<p>THE <strong>PURPLE MOON</strong> waiting for you!</p>
