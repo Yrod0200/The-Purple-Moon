@@ -1,0 +1,9 @@
+client.py
+server.py
+setup.py
+purplemoon.egg-info/PKG-INFO
+purplemoon.egg-info/SOURCES.txt
+purplemoon.egg-info/dependency_links.txt
+purplemoon.egg-info/entry_points.txt
+purplemoon.egg-info/requires.txt
+purplemoon.egg-info/top_level.txt

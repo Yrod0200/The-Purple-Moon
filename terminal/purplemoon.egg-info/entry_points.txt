@@ -1,0 +1,3 @@
+[console_scripts]
+purplemoon = client:start_connection
+purplemoon_server = server:handle_clients

@@ -2,7 +2,14 @@ DEBUG = False # WARNING:
 # USE THIS ONLY FOR DEBBUGING, SINCE THE TERMINAL WILL SPAM TEXT
 
 
-#test
+import sys
+
+resp = input("Would you like to start from this file? (Y/n)" )
+
+if not (resp.lower() == "y" or resp == ""):
+    sys.exit(1)
+else:
+    pass
 
 import socket
 import threading
@@ -11,6 +18,9 @@ import random
 IP =  "0.0.0.0" # Change this only if you know what to do.
 PORT = 6100
 STRING_HANDLE_PORT = 9857
+
+
+
 
 MAX_CLIENTS = int(input("How many people?"))
 
@@ -129,6 +139,3 @@ def accept_string_port_connections():
             if DEBUG:
                 print(f"VERBOSE: ERROR WHEN PAIRING STRING PORT: {e}")
 
-
-if __name__ == "__main__":
-    handle_clients()

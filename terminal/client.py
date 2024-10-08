@@ -1,6 +1,15 @@
 import socket
 import pyaudio
 import threading
+import sys
+
+
+resp = input("Would you like to start from this file? (Y/n)" )
+
+if not (resp.lower() == "y" or resp == ""):
+    sys.exit(1)
+else:
+    pass
 
 IP = input("Enter the IP you want to connect: ")
 PORT = 6100
@@ -23,6 +32,7 @@ def is_utf_8(data):
         return True
     except UnicodeDecodeError:
         return False
+
 
 
 def start_connection():
@@ -93,6 +103,3 @@ def write_data():
             print(f"ERROR: {e}")
 
         
-
-if __name__ == "__main__":
-    start_connection()
