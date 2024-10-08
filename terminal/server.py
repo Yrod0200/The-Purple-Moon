@@ -8,7 +8,7 @@ import socket
 import threading
 import string
 import random 
-IP =  "localhost"
+IP =  "0.0.0.0" # Change this only if you know what to do.
 PORT = 6100
 STRING_HANDLE_PORT = 9857
 
