@@ -2,7 +2,10 @@ import socket
 import pyaudio
 import threading
 import sys
+import time
 
+
+DEBUG = False # Debbuging only!
 
 resp = input("Would you like to start from this file? (Y/n)" )
 
@@ -90,8 +93,10 @@ def send_data():
             data = inp_stream.read(BUFFER)
             if data:
                 main_socket.send(data)
-    except Exception as e:
-        print(f"ERROR: {e}")
+    except ConnectionError as e:
+        if DEBUG:
+            print(f"ERROR CONNECTING TO SERVER: {e}")
+            time.sleep(1)
 
 def write_data():
     while True:
@@ -99,7 +104,11 @@ def write_data():
             data = main_socket.recv(4096)
             if data:
                 out_stream.write(data)
-        except Exception as e:
-            print(f"ERROR: {e}")
+        except ConnectionError as e:
+            if DEBUG:
+                print(f"ERROR CONNECTING TO SERVER: {e}")
+                time.sleep(1)
 
         
+if __name__ == "__main__":
+    start_connection()

@@ -1,8 +1,41 @@
 #!/bin/bash
+echo "\033[0;····················································";
+echo ": ███████████ █████                                :";
+echo ":░█░░░███░░░█░░███                                 :";
+echo ":░   ░███  ░  ░███████    ██████                   :";
+echo ":    ░███     ░███░░███  ███░░███                  :";
+echo ":    ░███     ░███ ░███ ░███████                   :";
+echo ":    ░███     ░███ ░███ ░███░░░                    :";
+echo ":    █████    ████ █████░░██████                   :";
+echo ":   ░░░░░    ░░░░ ░░░░░  ░░░░░░                    :";
+echo ":                                                  :";
+echo ":                                                  :";
+echo ":                                                  :";
+echo ": ███████████                       ████           :";
+echo ":░░███░░░░░███                     ░░███           :";
+echo ": ░███    ░███ █████ ████ ████████  ░███   ██████  :";
+echo ": ░██████████ ░░███ ░███ ░░███░░███ ░███  ███░░███ :";
+echo ": ░███░░░░░░   ░███ ░███  ░███ ░███ ░███ ░███████  :";
+echo ": ░███         ░███ ░███  ░███ ░███ ░███ ░███░░░   :";
+echo ": █████        ░░████████ ░███████  █████░░██████  :";
+echo ":░░░░░          ░░░░░░░░  ░███░░░  ░░░░░  ░░░░░░   :";
+echo ":                         ░███                     :";
+echo ":                         █████                    :";
+echo ":                        ░░░░░                     :";
+echo ": ██████   ██████                                  :";
+echo ":░░██████ ██████                                   :";
+echo ": ░███░█████░███   ██████   ██████  ████████       :";
+echo ": ░███░░███ ░███  ███░░███ ███░░███░░███░░███      :";
+echo ": ░███ ░░░  ░███ ░███ ░███░███ ░███ ░███ ░███      :";
+echo ": ░███      ░███ ░███ ░███░███ ░███ ░███ ░███      :";
+echo ": █████     █████░░██████ ░░██████  ████ █████     :";
+echo ":░░░░░     ░░░░░  ░░░░░░   ░░░░░░  ░░░░ ░░░░░      :";
+echo "····················································\033[0m";
 
 # Function to install PyAudio using pip
 install_pyaudio() {
     python3 -m pip install pyaudio
+    python3 -m pip install pyaes
     echo "PyAudio installed successfully!"
 }
 
@@ -15,22 +48,22 @@ if [ -f /etc/os-release ]; then
         ubuntu|debian)
             echo "Installing dependencies for Debian/Ubuntu..."
             sudo apt-get update
-            sudo apt-get install -y python3-pyaudio
+            sudo apt-get install -y python3-pyaudio python3-pyaes
             install_pyaudio
             ;;
         fedora)
             echo "Installing dependencies for Fedora..."
-            sudo dnf install -y python3-pyaudio
+            sudo dnf install -y python3-pyaudio python3-pyaes
             install_pyaudio
             ;;
         arch)
             echo "Installing dependencies for Arch Linux..."
-            sudo pacman -S --noconfirm python-pyaudio
+            sudo pacman -S --noconfirm python-pyaudio python3-pyaes
             install_pyaudio
             ;;
         centos|rhel)
             echo "Installing dependencies for CentOS/RHEL..."
-            sudo yum install -y python3-pyaudio
+            sudo yum install -y python3-pyaudio python3-pyaes
             install_pyaudio
             ;;
         *)

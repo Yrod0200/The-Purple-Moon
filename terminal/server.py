@@ -61,7 +61,6 @@ def connection_auth(csock, caddr):
         username =  csock.recv(1024).decode('utf-8')
         if DEBUG:
             print(f"VERBOSE: Sucessful accepted username from {caddr}: {username}")
-        print(f"Going back to password connection...")
 
         csock.sendall(b"COMMAND: PASSWORD_ENTER")
 
@@ -79,6 +78,7 @@ def connection_auth(csock, caddr):
 
         if not data == code:
             csock.sendall(b"AUTH: FAILED: INCORRECT_PASSWORD")
+            csock.close()
         else:
             csock.sendall(b"AUTH: SUCESSFULL")
             clients.append(csock)
@@ -139,3 +139,7 @@ def accept_string_port_connections():
             if DEBUG:
                 print(f"VERBOSE: ERROR WHEN PAIRING STRING PORT: {e}")
 
+if __name__ == "__main__":
+    if DEBUG:
+        print("VERBOSE: Main detected...")
+    handle_clients()
