@@ -1,5 +1,5 @@
 <h1>PRE-USE WARNING: IS IN ALPHA DEVELOPMENT</h1>
-<p>By downloading this app on pre-release, (even if downloaded on the "Releases" tab, not git cloned)you agree that you read everything below and you agree that if you got your privacy violated on any way, is not my responsability: </p>
+<p>By downloading this app on pre-release, (even if downloaded on the "Releases" tab, or git cloned)you agree that you read everything below and you agree that if you got your privacy violated on any way, is not my responsability: </p>
 <h2>This project is in pre-release, and I don't implemented cypher on it <strong>yet</strong>. There is some warnings of not to do:</h2>
 <ul>
     <li><strong>Dont use this chat for very personal chatting (yet):</strong> If an hacker intercept the TCP and try to read all the audio bytes, they can hear anything you sayed.</li>
