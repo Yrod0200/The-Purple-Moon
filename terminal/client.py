@@ -1,4 +1,5 @@
 import socket
+import cryptography.fernet
 import pyaudio
 import threading
 import sys

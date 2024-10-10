@@ -34,7 +34,7 @@ str_srv_sock.bind((IP, STRING_HANDLE_PORT))
 if DEBUG:
     print("VERBOSE: Binded port sucessfully")
 
-clients = []
+clients = {}
 cli_addrs = {}
 
 def generate_code():
@@ -97,7 +97,7 @@ def connection_auth(csock, caddr):
             csock.close()
         else:
             csock.sendall(b"AUTH: SUCESSFULL")
-            clients.append(csock)
+            clients[username] = {"ip":caddr, "username":username, "csock":csock }
             sending_thread = threading.Thread(target=listen_for_client_data, args=(csock, caddr))
             sending_thread.start()
         if DEBUG:
@@ -111,9 +111,13 @@ def listen_for_client_data(csock, caddr):
     while True:
         data = csock.recv(4096)
         if data:
-            for cli in clients:
-                if cli != csock:
-                    cli.sendall(data)
+            for cli, cdata in clients.items():
+                if cdata["csock"] != csock:
+                    try:
+                        cdata["csock"].sendall(data)
+                    except ConnectionError:
+                        if DEBUG:
+                            print(f"Client {cli} failed to recieve data. ")
 
 
 def accept_string_port_connections():
