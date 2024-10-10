@@ -5,7 +5,7 @@ import sys
 import time
 
 
-DEBUG = True # Debbuging only!
+DEBUG = False # Debbuging only!
 
 resp = input("Would you like to start from this file? (Y/n)" )
 

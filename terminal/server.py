@@ -1,4 +1,4 @@
-DEBUG = True # WARNING:
+DEBUG = False # WARNING:
 # USE THIS ONLY FOR DEBBUGING, SINCE THE TERMINAL WILL SPAM TEXT
 
 
@@ -52,7 +52,13 @@ def handle_clients():
 
     while True:  
         srv_sock.listen(MAX_CLIENTS)
+
         client_socket, client_addr =  srv_sock.accept()
+        if len(clients) >= MAX_CLIENTS:
+            print(f"Connection with {client_addr} refused: max client exceeded")
+            client_socket.close()
+
+
         print(f"Connection accepted from: {client_addr}")
 
         client_thread = threading.Thread(target=connection_auth, args=(client_socket, client_addr))
@@ -92,17 +98,15 @@ def connection_auth(csock, caddr):
         else:
             csock.sendall(b"AUTH: SUCESSFULL")
             clients.append(csock)
-            cli_addrs.append(caddr)
-            sending_thread = threading.Thread(target=listen_for_client_data, args=(csock, caddr, username))
+            sending_thread = threading.Thread(target=listen_for_client_data, args=(csock, caddr))
             sending_thread.start()
         if DEBUG:
             print("VERBOSE: Sucessfull passed client password phase")
-    except:
-        csock.close()
-    finally:
-        pass
+    except Exception as e:
+        if DEBUG:
+            print(f"ERROR LISTENING FOR DATA: {e}")
 
-def listen_for_client_data(csock, caddr, username):
+def listen_for_client_data(csock, caddr):
     print(f"Listening data from {caddr}")
     while True:
         data = csock.recv(4096)
@@ -119,7 +123,8 @@ def accept_string_port_connections():
     while True:
         try:
             csock, caddr = str_srv_sock.accept()
-            
+
+
             csock.sendall("HANDSHAKE: GET: IP_ADDRESS".encode('utf-8'))
 
             ip_response = csock.recv(1024).decode('utf-8')
@@ -141,7 +146,7 @@ def accept_string_port_connections():
                 if DEBUG:
                     print(f"CHANGED: {cli_addrs}")
                 csock.sendall(b"HANDSHAKE: IP_ADDRESS: SUCESSFULL")
-                
+
 
         except Exception as e:
             if DEBUG:
