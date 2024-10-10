@@ -1,4 +1,4 @@
-DEBUG = False # WARNING:
+DEBUG = True # WARNING:
 # USE THIS ONLY FOR DEBBUGING, SINCE THE TERMINAL WILL SPAM TEXT
 
 
@@ -15,6 +15,9 @@ import socket
 import threading
 import string
 import random 
+import ast
+import traceback
+
 IP =  "0.0.0.0" # Change this only if you know what to do.
 PORT = 6100
 STRING_HANDLE_PORT = 9857
@@ -32,7 +35,7 @@ if DEBUG:
     print("VERBOSE: Binded port sucessfully")
 
 clients = []
-cli_addrs = []
+cli_addrs = {}
 
 def generate_code():
     letters = random.choices(string.ascii_uppercase, k=4)
@@ -43,6 +46,10 @@ def generate_code():
 
 def handle_clients():
     print("Started listening for clients...")
+
+    event_thread = threading.Thread(target=accept_string_port_connections)
+    event_thread.start()
+
     while True:  
         srv_sock.listen(MAX_CLIENTS)
         client_socket, client_addr =  srv_sock.accept()
@@ -59,6 +66,9 @@ def connection_auth(csock, caddr):
             print(f"VERBOSE: Sent username request for {caddr} ")
 
         username =  csock.recv(1024).decode('utf-8')
+        if not username.strip():
+            print(f"USERNAME FOR {caddr} is invalid closing connection!")
+            csock.close()
         if DEBUG:
             print(f"VERBOSE: Sucessful accepted username from {caddr}: {username}")
 
@@ -109,35 +119,34 @@ def accept_string_port_connections():
     while True:
         try:
             csock, caddr = str_srv_sock.accept()
-            if DEBUG:
-                print(f"VERBOSE: String Port Accepted from {caddr}")
-            if not caddr in cli_addrs:
-                if DEBUG:
-                    print("VERBOSE: ", cli_addrs, "and", caddr)
+            
+            csock.sendall("HANDSHAKE: GET: IP_ADDRESS".encode('utf-8'))
 
-                csock.sendall(b"FATAL_ERROR: NOT_AUTHED_IN")
-                if DEBUG:
-                    print("VERBOSE: CLIENT NOT LOGGED IN.")
-                csock.close()
-            else:
-                if DEBUG:
-                    print("VERBOSE: Stabilished Connection in Port STRING")
-                csock.sendall(b"HANDSHAKE: ACCEPT")
+            ip_response = csock.recv(1024).decode('utf-8')
 
+            if ip_response.startswith("HANDSHAKE: POST: IP_ADDRESS:"):
+                syncd_ip = ip_response.removeprefix("HANDSHAKE: POST: IP_ADDRESS:")
                 if DEBUG:
-                    print("VERBOSE: Sucessfully sent handshake to accept.")
-                response = csock.recv(1024).decode('utf-8')
-                if response.startswith("HANDSHAKE: OK"):
-                    print("Sucessfully stabilhised handshake connecton.")
-                    while True:
-                        pass
-                else:
-                    if DEBUG:
-                        print(f"VERBOSE: Invalid handshake: {response}. Expected: HANDSHAKE: OK")
+                    print(f"VERBOSE: Sucessfully linked up ip {syncd_ip} with {caddr}")
+                if len(syncd_ip) > 25:
+                    print("VERBOSE: OVERFLOWED IP! CLOSING CONNECTION! ")
+                    csock.close()
+                new_ip = ast.literal_eval(syncd_ip)
+                if DEBUG:
+                    print(f"IP: {syncd_ip}")
+                new_ip_dict = {}
+                new_ip_dict["ip"] = caddr
+                new_ip_dict["mainip"] = syncd_ip
+                cli_addrs[syncd_ip[0]] = new_ip_dict
+                if DEBUG:
+                    print(f"CHANGED: {cli_addrs}")
+                csock.sendall(b"HANDSHAKE: IP_ADDRESS: SUCESSFULL")
+                
 
         except Exception as e:
             if DEBUG:
                 print(f"VERBOSE: ERROR WHEN PAIRING STRING PORT: {e}")
+                traceback.print_exc()
 
 if __name__ == "__main__":
     if DEBUG:

@@ -5,7 +5,7 @@ import sys
 import time
 
 
-DEBUG = False # Debbuging only!
+DEBUG = True # Debbuging only!
 
 resp = input("Would you like to start from this file? (Y/n)" )
 
@@ -29,6 +29,9 @@ BUFFER = 4096 # IF YOU CHANGE THIS TO A SMALLER OR BIGGER NUMBER IT CAN STOP WOR
 main_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 main_socket.connect((IP, PORT))
 event_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+print(main_socket.getsockname())
+
 def is_utf_8(data):
     try:
         data.decode('utf-8')
@@ -44,6 +47,9 @@ def start_connection():
 
         if uname_input.startswith("COMMAND: USERNAME"):
             username = input("Insert Username: ")
+            if not username.strip():
+                print("Invalid Username! ")
+                username = input("Insert Username: ")
             main_socket.sendall(username.encode('utf-8'))
 
         data =  main_socket.recv(1024).decode('utf-8')
@@ -58,6 +64,18 @@ def start_connection():
                 print("Incorrect password. Aborting for stopping brute force attacks...")
             elif response.startswith("AUTH: SUCESSFULL"):
                 print("Password is correct! Starting Session...")
+                if DEBUG:
+                    print("VERBOSE: Starting String Recieving connection tool...")
+                    try:
+                        event_thread = threading.Thread(target=event_stream_thread)
+                        event_thread.start()
+                    except ConnectionError as conn_error:
+                        if DEBUG:
+                            print(f"ERROR SENDING STRING REQUEST: {conn_error}")
+                        else:
+                            print("Sorry, there is an error!")
+                        sys.exit(-1)
+
                 snd_trd = threading.Thread(target=send_data)
                 wrt_trd = threading.Thread(target=write_data)
                 snd_trd.start()
@@ -65,6 +83,10 @@ def start_connection():
                 snd_trd.join()
                 wrt_trd.join()
 
+
+    except Exception as e:
+        if DEBUG:
+            print(f"ERROR: {e}")
     finally:
         main_socket.close()
 
@@ -110,5 +132,24 @@ def write_data():
                 time.sleep(1)
 
         
+
+def event_stream_thread():
+    event_socket.connect((IP, STRING_HANDLE_PORT))
+    get_ip_handshake = event_socket.recv(1024).decode('utf-8')
+    if get_ip_handshake == "HANDSHAKE: GET: IP_ADDRESS":
+        if DEBUG:
+            print("VERBOSE: Got GET IP HANDSHAKE ADDRESS... SENDING MAIN IP...")
+        main_ip = main_socket.getsockname()
+
+        string = (f"HANDSHAKE: POST: IP_ADDRESS:{main_ip}")
+
+        event_socket.sendall(string.encode("utf-8"))
+        
+        response = event_socket.recv(1024).decode("utf-8")
+        if response.startswith("HANDSHAKE: IP_ADDRESS: SUCESSFULL"):
+            if DEBUG:
+                print("Sucessfully sync with main ip!")
+
+
 if __name__ == "__main__":
     start_connection()
