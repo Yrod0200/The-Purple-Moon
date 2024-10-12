@@ -3,7 +3,7 @@
 <h2>This project is in pre-release, and I don't implemented cypher on it <strong>yet</strong>. There is some warnings of not to do:</h2>
 <ul>
     <li><strong>Dont use this chat for very personal chatting (yet):</strong> If an hacker intercept the TCP and try to read all the audio bytes, they can hear anything you sayed.</li>
-    <li><strong>DONT PORT FORWARD IT (PLEASE): </strong>As I said, a hacker can intercept the chat, but only in your LAN, (that can only be accessed by your Wi-Fi or things like Hamachi or Radmin VPN). BUT IF YOU PORT FORWARD IT (Make it acessable on all the internet), you have double chance (tbh 5x chance) of being intercepted. If you wanT to connect with your friends outside of your home, use Radmin if everyone is on Windows (i don't trust they not gonna sell your traffic ngl) or if you are strange and use Linux (like me) use Hamachi and Haguchi.</li>
+    <li><strong>DONT PORT FORWARD IT (PLEASE): </strong>As I said, a hacker can intercept the chat, but only in your LAN, (that can only be accessed by your Wi-Fi or things like Hamachi or Radmin VPN). BUT IF YOU PORT FORWARD IT (Make it acessable on all the internet), you have double chance (tbh 5x chance) of being intercepted. If you wanT to connect with your friends outside of your home, use use Hamachi and Haguchi. (Radmin VPN is not working.)</li>
     <h3>ADVICE FOR PROGRAMMERS</h3>
     <p>Other thing, I know how to intercept this, but, if you found any way to exploit this, I'm begging you to not use it for bad things. It's simple to patch it. Just add an issue with the problem and (if you can) add a pull request for fixing it.</p>
     <h2>REMEMBER: THIS WARNINGS IS TEMPORARY AND THE UPDATES IS BEING WORKED ON AND WILL BE AVAILABLE SOON! </h2>
